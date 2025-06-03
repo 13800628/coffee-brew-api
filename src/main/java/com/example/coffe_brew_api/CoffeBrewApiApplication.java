@@ -14,15 +14,16 @@ public class CoffeBrewApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CoffeBrewApiApplication.class, args);
 	}
-	
+	/* 
 	@Bean
 	CommandLineRunner runner(CoffeeBeanRepository repository) {
 		return args -> {
-			repository.save(new CoffeeBean("エチオピアモカ", "エチオピア", "フルーティーで酸味がある"));
-			repository.save(new CoffeeBean("コロンビア スプレモ", "コロンビア", "バランスが良くコクがある"));
-			repository.save(new CoffeeBean("ブルーマウンテン", "ジャマイカ", "酸味・苦味・コク全てがマイルド"));
-			repository.save(new CoffeeBean("グアテマラ アンティグア", "グアテマラ", "チョコレートのような甘みと酸味のバランスがいい"));
-			repository.save(new CoffeeBean("ブラジル サントス", "ブラジル", "ナッツやチョコ系の香りと甘味が特徴"));
+			repository.save(new CoffeeBean("エチオピアモカ", "エチオピア", "フルーティーで酸味がある", "ハンドドリップ"));
+			repository.save(new CoffeeBean("コロンビア スプレモ", "コロンビア", "バランスが良くコクがある", "ペーパードリップ"));
+			repository.save(new CoffeeBean("ブルーマウンテン", "ジャマイカ", "酸味・苦味・コク全てがマイルド", "サイフォン"));
+			repository.save(new CoffeeBean("グアテマラ アンティグア", "グアテマラ", "チョコレートのような甘みと酸味のバランスがいい", "フレンチプレス"));
+			repository.save(new CoffeeBean("ブラジル サントス", "ブラジル", "ナッツやチョコ系の香りと甘味が特徴", "エスプレッソ"));
 		};
 	}
+	*/
 }
