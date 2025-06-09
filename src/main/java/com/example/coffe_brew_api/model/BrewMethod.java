@@ -5,9 +5,11 @@ public enum BrewMethod {
     POUR_OVER("Pour Over"),
     FRENCH_PRESS("French Press"),
     ESPRESSO("Espresso"),
-    AEROPRESS("AeroPress"),
-    COLD_BREW("Cold Brew");
+    SIPHON("Siphon"),
+    PAPER_DRIP("Paper Drip"),
+    HAND_DRIP("Hand Drip");
 
+    
     private final String value;
 
     BrewMethod(String value) {

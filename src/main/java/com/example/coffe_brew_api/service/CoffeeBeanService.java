@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+
 import com.example.coffe_brew_api.model.BrewMethod;
 
 @Service
@@ -21,19 +24,19 @@ public class CoffeeBeanService {
   }
   
   public List<CoffeeBeanResponseDto> getBeans(String name, String origin, String flavor, BrewMethod brewMethod) {
-    List<CoffeeBean> beans;
+  CoffeeBean probe = new CoffeeBean();
+  probe.setName(name);
+  probe.setOrigin(origin);
+  probe.setFlavor(flavor);
+  probe.setBrewMethod(brewMethod);
 
-    if (name != null && !name.isEmpty()) {
-        beans = repository.findByNameContainingIgnoreCase(name);
-    } else if (origin != null && !origin.isEmpty()) {
-      beans = repository.findByOriginContainingIgnoreCase(origin);
-    } else if (flavor != null && !flavor.isEmpty()) {
-      beans = repository.findByFlavorContainingIgnoreCase(flavor);
-    } else if (brewMethod != null) {
-      beans = repository.findByBrewMethod(brewMethod);
-    } else {
-      beans = repository.findAll();
-    }
+  ExampleMatcher matcher = ExampleMatcher.matchingAll()
+      .withIgnoreCase()
+      .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+      .withIgnoreNullValues();
+
+  Example<CoffeeBean> example = Example.of(probe, matcher);
+  List<CoffeeBean> beans = repository.findAll(example);
 
     return beans.stream()
         .map(this::convertToDto)
