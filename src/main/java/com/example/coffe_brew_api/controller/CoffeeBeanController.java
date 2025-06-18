@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.example.coffe_brew_api.dto.CoffeeBeanResponseDto;
 import com.example.coffe_brew_api.service.CoffeeBeanService;
 
@@ -41,7 +44,8 @@ public class CoffeeBeanController {
     }
     
     @PostMapping
-    public CoffeeBean addBean(@Valid @RequestBody CoffeeBeanRequestDto dto) {
-        return service.addBean(dto);
+    public ResponseEntity<CoffeeBeanResponseDto> addBean(@Valid @RequestBody CoffeeBeanRequestDto dto) {
+        CoffeeBeanResponseDto response = service.createCoffeeBean(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

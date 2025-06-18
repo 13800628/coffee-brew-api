@@ -22,6 +22,11 @@ public class CoffeeBeanService {
   public CoffeeBeanService(CoffeeBeanRepository repository) {
     this.repository = repository;
   }
+
+  public CoffeeBeanResponseDto createCoffeeBean(CoffeeBeanRequestDto dto) {
+    CoffeeBean saved = addBean(dto);
+    return convertToDto(saved);
+  }
   
   public List<CoffeeBeanResponseDto> getBeans(String name, String origin, String flavor, BrewMethod brewMethod) {
   CoffeeBean probe = new CoffeeBean();
@@ -57,13 +62,16 @@ public class CoffeeBeanService {
   }
   
   public CoffeeBean addBean(CoffeeBeanRequestDto dto) {
-    BrewMethod methodEnum = BrewMethod.fromValue(dto.getBrewMethod());
+    if (dto.getName() == null) {
+      throw new IllegalArgumentException("name must not be null");
+    }
     CoffeeBean bean = new CoffeeBean(
-        dto.getName(),
-        dto.getOrigin(),
-        dto.getFlavor(),
-        methodEnum
+      dto.getName(),
+      dto.getOrigin(),
+      dto.getFlavor(),
+      dto.getBrewMethod()
     );
+
     return repository.save(bean);
   }
 

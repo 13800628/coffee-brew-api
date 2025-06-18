@@ -8,7 +8,7 @@ public enum BrewMethod {
     SIPHON("Siphon"),
     PAPER_DRIP("Paper Drip"),
     HAND_DRIP("Hand Drip");
-
+    
     
     private final String value;
 

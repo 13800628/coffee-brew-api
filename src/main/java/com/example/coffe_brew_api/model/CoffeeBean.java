@@ -16,7 +16,7 @@ public class CoffeeBean {
     private String origin;
     
     private String flavor;
-
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "brew_method")
     private BrewMethod brewMethod;
@@ -29,6 +29,11 @@ public class CoffeeBean {
         this.origin = origin;
         this.flavor = flavor;
         this.brewMethod = brewMethod;
+    }
+
+    // テスト用
+    public void setId(Long id) {
+        this.id = id;
     }
 
     // ゲッター・セッター

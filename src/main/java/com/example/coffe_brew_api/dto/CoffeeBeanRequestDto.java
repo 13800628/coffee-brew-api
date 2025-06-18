@@ -17,9 +17,19 @@ public class CoffeeBeanRequestDto {
     @NotBlank(message = "{coffeeBean.flavor.notBlank}")
     @Size(min = 2, max = 50, message = "{coffeeBean.flavor.size}")
     private String flavor;
-
+    
     @NotNull(message = "{coffeeBean.brewMethod.notNull}")
-    private String brewMethod;
+    private BrewMethod brewMethod;
+
+    public CoffeeBeanRequestDto () {
+    };
+
+    public CoffeeBeanRequestDto(String name, String origin, String flavor, BrewMethod brewMethod){
+        this.name = name;
+        this.origin = origin;
+        this.flavor = flavor;
+        this.brewMethod = brewMethod;
+    }
 
     // ゲッター・セッター
   public String getName() {
@@ -46,11 +56,11 @@ public class CoffeeBeanRequestDto {
       this.flavor = flavor;
   }
 
-  public String getBrewMethod() {
+  public BrewMethod getBrewMethod() {
       return brewMethod;
   }
 
-  public void setBrewMethod(String brewMethod) {
+  public void setBrewMethod(BrewMethod brewMethod) {
         this.brewMethod = brewMethod;
   }
 }
