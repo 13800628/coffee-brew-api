@@ -8,6 +8,7 @@ import com.example.coffe_brew_api.dto.CoffeeBeanResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -24,6 +25,7 @@ public class CoffeeBeanService {
   }
 
   public CoffeeBeanResponseDto createCoffeeBean(CoffeeBeanRequestDto dto) {
+    Objects.requireNonNull(dto, "request must not be null");
     CoffeeBean saved = addBean(dto);
     return convertToDto(saved);
   }
@@ -47,10 +49,12 @@ public class CoffeeBeanService {
         .map(this::convertToDto)
         .toList();
   }
-
+  
   public List<CoffeeBeanResponseDto> searchByKeyword(String keyword) {
+    Objects.requireNonNull(keyword, "keyword must not be null");
+
     List<CoffeeBean> beans;
-    if (keyword != null && !keyword.trim().isEmpty()){
+    if (!keyword.trim().isEmpty()){
       beans = repository.searchByKeyword(keyword);
     } else {
       beans = repository.findAll();
@@ -76,6 +80,7 @@ public class CoffeeBeanService {
   }
 
   public CoffeeBeanResponseDto convertToDto(CoffeeBean bean) {
+    Objects.requireNonNull(bean, "bean must not be null");
     return new CoffeeBeanResponseDto(
         bean.getId(), 
         bean.getName(), 

@@ -4,7 +4,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,6 +69,16 @@ public class CoffeeBeanServiceTest {
   }
 
   @Test
+  @DisplayName("createCoffeeBean - リクエストがnullならNullPointerExceptionをスロー")
+  void createCoffeeBean_nullRequest_throwException() {
+     assertThatThrownBy(() -> coffeeBeanService.createCoffeeBean(null))
+      .isInstanceOf(NullPointerException.class)
+      .hasMessageContaining("request must not be null");
+
+    verify(repository, never()).save(any());
+  }
+
+  @Test
   @DisplayName("addBean - 正常系")
   void addBean_success() {
     when(repository.save(any(CoffeeBean.class))).thenReturn(savedBean);
@@ -121,6 +130,14 @@ public class CoffeeBeanServiceTest {
   }
 
   @Test
+  @DisplayName("convertToDto - nullを渡すとNullPointerExceptionをスロー")
+  void convertToDto_nullInput_throwException() {
+    assertThatThrownBy(() -> coffeeBeanService.convertToDto(null))
+      .isInstanceOf(NullPointerException.class)
+      .hasMessageContaining("bean must not be null");
+  }
+
+  @Test
   @DisplayName("searchByKeyword - キーワードありの場合")
   void searchKeyword_withKeyword() {
     String keyword = "Ethiopia";
@@ -162,5 +179,16 @@ public class CoffeeBeanServiceTest {
 
     //repositoryのsearchByKeywordは呼ばれてないことを検証
     verify(repository, never()).searchByKeyword(anyString());
+  }
+
+  @Test
+  @DisplayName("searchKeyword - キーワードがnullの場合はIllegalArgumentExceptionをスロー")
+  void searchKeyword_nullKeyword_throwException() {
+   assertThatThrownBy(() -> coffeeBeanService.searchByKeyword(null))
+    .isInstanceOf(NullPointerException.class)
+    .hasMessageContaining("keyword must not be null");
+    
+  verify(repository, never()).searchByKeyword(any());
+  verify(repository, never()).findAll();
   }
 }
