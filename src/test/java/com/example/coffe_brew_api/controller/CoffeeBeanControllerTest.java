@@ -76,6 +76,54 @@ public class CoffeeBeanControllerTest {
   }
 
   @Test
+  @DisplayName("POST /beans - 異常系(nameが1文字で短すぎる)")
+  void createCoffeeBean_nameTooShort() throws Exception {
+    CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
+    request.setName("A");
+    request.setOrigin("Colombia");
+    request.setFlavor("Rich flavor");
+    request.setBrewMethod(BrewMethod.HAND_DRIP);
+
+    mockMvc.perform(post("/beans")
+             .contentType(MediaType.APPLICATION_JSON)
+             .content(objectMapper.writeValueAsString(request)))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.fieldErrors.name").exists());
+  }
+
+  @Test
+  @DisplayName("POST /beans - 異常系(nameが長すぎる)")
+  void createCoffeeBean_nameTooLong() throws Exception {
+    CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
+    request.setName("ThisNameIsWayTooLongToBeValid");
+    request.setOrigin("Colombia");
+    request.setFlavor("Rich flavor");
+    request.setBrewMethod(BrewMethod.HAND_DRIP);
+
+    mockMvc.perform(post("/beans")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.fieldErrors.name").exists());
+  }
+
+  @Test
+  @DisplayName("POST /beans - 異常系(originが1文字で短すぎる)")
+  void createCoffeeBean_originTooShort() throws Exception {
+    CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
+    request.setName("Colombia");
+    request.setOrigin("A");
+    request.setFlavor("Citrusy and rich");
+    request.setBrewMethod(BrewMethod.HAND_DRIP);
+
+    mockMvc.perform(post("/beans")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.fieldErrors.origin").exists());
+  }
+
+  @Test
   @DisplayName("POST /api/coffee-beans - 異常系(brewMethodが不正な値)")
   void createCoffeeBean_invalidBrewMethod() throws Exception {
     CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
@@ -90,5 +138,21 @@ public class CoffeeBeanControllerTest {
             .content(objectMapper.writeValueAsString(request)))
           .andExpect(status().isBadRequest())
           .andExpect(jsonPath("$.message").exists());
+  }
+
+  @Test
+  @DisplayName("POST /beans - 異常系(originが空)")
+  void createCoffeeBean_originIsBlank() throws Exception {
+    CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
+    request.setName("Kenya");
+    request.setOrigin("");
+    request.setFlavor("Citrus");
+    request.setBrewMethod(BrewMethod.HAND_DRIP);
+
+    mockMvc.perform(post("/beans")
+             .contentType(MediaType.APPLICATION_JSON)
+             .content(objectMapper.writeValueAsBytes(request)))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.fieldErrors.origin").exists());
   }
 }
