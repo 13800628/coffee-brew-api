@@ -122,7 +122,55 @@ public class CoffeeBeanControllerTest {
           .andExpect(status().isBadRequest())
           .andExpect(jsonPath("$.fieldErrors.origin").exists());
   }
+  
+  @Test
+  @DisplayName("POST /beans - 異常系(originが長すぎる)")
+  void createCoffeeBean_originTooLong() throws Exception {
+    CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
+    request.setName("Colombia");
+    request.setOrigin("ThisOriginNameIsWayTooLong");
+    request.setFlavor("Citrusy and rich");
+    request.setBrewMethod(BrewMethod.HAND_DRIP);
 
+    mockMvc.perform(post("/beans")
+             .contentType(MediaType.APPLICATION_JSON)
+             .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.fieldErrors.origin").exists());
+  }
+
+  @Test
+  @DisplayName("POST /beans - 異常系(flavorが1文字短すぎる)")
+  void createCoffeeBean_flavorTooShort() throws Exception {
+    CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
+    request.setName("Colombia");
+    request.setOrigin("South America");
+    request.setFlavor("A");
+    request.setBrewMethod(BrewMethod.HAND_DRIP);
+
+    mockMvc.perform(post("/beans")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.fieldErrors.flavor").exists());
+  }
+
+  @Test
+  @DisplayName("POST /beans - 異常系(flavorが長すぎる)")
+  void createCoffeeBean_flavorTooLong() throws Exception {
+    CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
+    request.setName("Colombia");
+    request.setOrigin("South America");
+    request.setFlavor("A very long flavor description that exceeds fifty characters!");
+    request.setBrewMethod(BrewMethod.HAND_DRIP);
+
+    mockMvc.perform(post("/beans")
+             .contentType(MediaType.APPLICATION_JSON)
+             .content(objectMapper.writeValueAsString(request)))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.fieldErrors.flavor").exists());
+  }
+  
   @Test
   @DisplayName("POST /api/coffee-beans - 異常系(brewMethodが不正な値)")
   void createCoffeeBean_invalidBrewMethod() throws Exception {
@@ -140,6 +188,22 @@ public class CoffeeBeanControllerTest {
           .andExpect(jsonPath("$.message").exists());
   }
 
+  @Test
+  @DisplayName("POST /beans - 異常系(flavorが空)")
+  void createCoffeeBean_brewMethodIsNull() throws Exception {
+    CoffeeBeanRequestDto request = new CoffeeBeanRequestDto();
+    request.setName("Colombia");
+    request.setOrigin("South America");
+    request.setFlavor("Bright and sweet");
+    request.setBrewMethod(null);
+
+    mockMvc.perform(post("/beans")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.fieldErrors.brewMethod").exists());
+  }
+  
   @Test
   @DisplayName("POST /beans - 異常系(originが空)")
   void createCoffeeBean_originIsBlank() throws Exception {
