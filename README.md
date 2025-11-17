@@ -28,21 +28,4 @@
 
 ---
 
-## 📦 データ構造
-
-### CoffeeBeanRequestDto（POSTリクエスト）
-
-json
-{
-  "name": "Ethiopia G1",
-  "origin": "Ethiopia",
-  "flavor": "Floral and Citrus",
-  "brewMethod": "Pour Over"
-}
-
----
-
-
-今後は
-より簡潔かつ保守的なものにする
-言語も英語で統一し、フロントも最低限のデザインに
+AIを活用しながら作成したものです
